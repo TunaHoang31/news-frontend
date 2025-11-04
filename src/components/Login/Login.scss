@@ -1,0 +1,75 @@
+.red{
+    border : 1px solid red;
+}
+.green{
+    border : 1px solid green;
+}
+.blue{
+    border : 1px solid blue;
+}
+.gray{
+    border : 1px solid gray;
+}
+.yellow{
+    border : 1px solid yellow;
+}
+.login-container{
+    background-color: rgb(239, 239, 247);
+    min-height: 100vh;
+    padding-top: 20px;
+
+    .content-left{
+        // border : 1px solid gray;
+        // border-radius: 10px;
+        // background-color: white;
+        .brand{
+            text-transform: uppercase;
+            font-size: 36px;
+            font-weight: bold;  
+            color: #046ab9;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            text-align: center;
+            a{
+                text-decoration: none;
+            }
+        }
+        .detail{
+            font-size: 20px;
+            text-align: center;
+            color: rgb(0, 0, 0);
+            padding: 0 20px 20px 20px;
+        }
+    }
+    
+    .content-right{
+        .brand{
+            text-transform: uppercase;
+            font-size: 20px;
+            font-weight: bold;  
+            color: #046ab9;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            text-align: center;
+        }
+        // border : 1px solid gray;
+        border-radius: 10px;
+        background-color: white;
+
+        .forgot-password{
+            text-decoration: none;
+            color: #046ab9;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+        .return {
+            a {
+                text-decoration: none;
+            }
+            span {padding-left: 7px}
+        }
+    }
+    
+    
+}
