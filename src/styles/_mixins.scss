@@ -1,0 +1,88 @@
+@import '../styles/variables';
+
+// Button Styles
+@mixin button-base {
+  padding: 8px 12px;
+  border-radius: $border-radius-sm;
+  transition: $transition-normal;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+// Table Styles
+@mixin table-base {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: $spacing-md;
+  
+  th, td {
+    padding: $spacing-sm;
+    border-bottom: 1px solid $border-color;
+  }
+  
+  th {
+    font-weight: 600;
+    background-color: rgba($primary, 0.02);
+  }
+}
+
+// Card Styles
+@mixin card-base {
+  background: white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  padding: $spacing-md;
+}
+
+// Modal Styles
+@mixin modal-base {
+  .modal-content {
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-md;
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid $border-color;
+    padding: $spacing-md;
+  }
+  
+  .modal-body {
+    padding: $spacing-md;
+  }
+  
+  .modal-footer {
+    border-top: 1px solid $border-color;
+    padding: $spacing-md;
+  }
+}
+
+// Action Icons
+@mixin action-icon {
+  cursor: pointer;
+  padding: $spacing-xs;
+  font-size: 1.2rem;
+  transition: $transition-fast;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &.add {
+    color: $success;
+  }
+  
+  &.edit {
+    color: $primary-light;
+  }
+  
+  &.delete {
+    color: $danger;
+  }
+  
+  &.refresh {
+    color: $primary;
+  }
+}

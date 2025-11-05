@@ -1,6 +1,8 @@
+import './ArticleDetail.scss';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchArticleBySlug } from '../../services/newsService';
+import LatestNewsSidebar from './LatestNewsSidebar';
 
 const ArticleDetail = () => {
     const { slug } = useParams();
@@ -25,14 +27,35 @@ const ArticleDetail = () => {
 
     return (
         <div className="container mt-3">
-            <h1 className="mb-2">{article.title}</h1>
-            <div className="text-muted mb-3">
-                {article.category?.name} • {article.publishedAt ? new Date(article.publishedAt).toLocaleString() : ''}
+            <div className="row">
+                <div className="col-md-8">
+                    <article className="article-content">
+                        <h1 className="mb-2">{article.title}</h1>
+                        <div className="text-muted mb-3">
+                            {article.category?.name} • {article.publishedAt ? new Date(article.publishedAt).toLocaleString() : ''}
+                        </div>
+                        {article.thumbnail && (
+                            <img src={article.thumbnail}
+                                alt={article.title}
+                                className="article-image"
+                                style={{
+                                    display: 'block',
+                                    margin: '20px auto',
+                                    maxWidth: '100%',
+                                    height: 'auto'
+                                }} />
+                        )}
+                        <div
+                            className="article-body"
+                            style={{ whiteSpace: 'pre-wrap' }}
+                            dangerouslySetInnerHTML={{ __html: article.content }}
+                        />
+                    </article>
+                </div>
+                <div className="col-md-4">
+                    <LatestNewsSidebar excludeArticleId={article.id} />
+                </div>
             </div>
-            {article.thumbnail && (
-                <img src={article.thumbnail} alt={article.title} style={{ maxWidth: '100%', marginBottom: 16 }} />
-            )}
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
         </div>
     );
 };

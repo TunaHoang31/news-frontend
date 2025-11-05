@@ -10,6 +10,7 @@ import About from "../components/About/About";
 import ArticleDetail from "../components/Home/ArticleDetail";
 import NewsAdmin from "../components/NewsAdmin/NewsAdmin";
 
+
 const AppRoutes = (props) => {
     const Projects = () => {
         return (
@@ -37,6 +38,7 @@ const AppRoutes = (props) => {
                 <Route path="/about" >
                     <About />
                 </Route>
+
                 <Route path="/news/:slug" >
                     <ArticleDetail />
                 </Route>

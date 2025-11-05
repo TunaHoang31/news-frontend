@@ -1,7 +1,52 @@
+@import './styles/variables';
+@import './styles/mixins';
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $background-light;
+}
+
 .loading-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+}
+
+/* Global table action buttons styling - apply to all tables */
+.table {
+  .btn.edit, .btn.delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(2,6,23,0.04);
+    transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+  }
+
+  .btn.edit {
+    background: linear-gradient(90deg, #f59e0b, #f97316);
+    color: #fff;
+    border: 0;
+  }
+
+  .btn.delete {
+    background: transparent;
+    color: #dc2626;
+    border: 1px solid rgba(220,38,38,0.12);
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+  .btn.edit:hover { filter: brightness(0.97); box-shadow: 0 6px 18px rgba(249,115,22,0.12); }
+  .btn.delete:hover { background: #dc2626; color: #fff; border-color: #dc2626; box-shadow: 0 6px 18px rgba(220,38,38,0.08); }
+
+  @media (max-width: 576px) {
+    td[data-label="Actions"] .btn { margin: 4px 0 !important; }
+    td[data-label="Actions"] .btn.edit,
+    td[data-label="Actions"] .btn.delete { width: 48%; }
+  }
 }

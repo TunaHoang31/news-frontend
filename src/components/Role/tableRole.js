@@ -52,7 +52,7 @@ const TableRole = forwardRef((props, ref) => {
                                     <td>{item.url}</td>
                                     <td>{item.description}</td>
 
-                                    <td>
+                                    <td data-label="Actions">
                                         <button className="btn btn-danger delete"
                                             onClick={() => handleDeleteRole(item)}
                                         >

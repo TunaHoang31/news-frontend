@@ -1,6 +1,11 @@
-.group-role-container{
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.group-role-container {
+    @include card-base;
+    
     .red {
-        color: red;
+        color: $danger;
         outline: none;
         border: none;
     }

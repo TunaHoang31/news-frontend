@@ -51,7 +51,13 @@ const UserProvider = ({ children }) => {
         // } else {
         //     setUser({ ...user, isLoading: false })
         // }
-        fetchUser();
+        // fetchUser();
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            fetchUser();
+        } else {
+            setUser({ ...userDefault, isLoading: false });
+        }
     }, [])
     return (
         <UserContext.Provider value={{ user, loginContext, logoutContext }}>

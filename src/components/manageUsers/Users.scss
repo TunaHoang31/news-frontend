@@ -1,20 +1,156 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
 .modal-user {
+    @include modal-base;
+    
     .content-body {
-        .red{
-            color: red;
+        .red {
+            color: $danger;
             outline: none;
             border: none;
         }
     }
-} 
-.manage-users-container{
-    i {
-        padding-right: 7px;
-    }
-    .actions {
-        .refresh{
-            margin-right: 10px;
-        }
+}
 
+.manage-users-container {
+    @include card-base;
+    
+    i {
+        padding-right: $spacing-xs;
+    }
+    
+    .actions {
+        i {
+            @include action-icon;
+        }
+        
+        .refresh {
+            margin-right: $spacing-sm;
+        }
     }
 }
+
+/* Responsive table for small screens */
+@media (max-width: 768px) {
+    .user-body {
+        .table {
+            thead {
+                display: none;
+            }
+
+            tbody {
+                tr {
+                    display: block;
+                    margin-bottom: 12px;
+                    border: 1px solid rgba(0,0,0,0.04);
+                    border-radius: 8px;
+                    padding: 8px;
+                    background: #fff;
+                }
+
+                td {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 6px 8px;
+                    border-top: none;
+                }
+
+                td[data-label]::before {
+                    content: attr(data-label) ": ";
+                    font-weight: 700;
+                    color: #374151;
+                    margin-right: 8px;
+                    white-space: nowrap;
+                }
+
+                td:last-child {
+                    display: flex;
+                    gap: 8px;
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+                }
+
+                .btn {
+                    padding: 6px 10px;
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+}
+
+        /* On very small screens make action buttons full width for easier tapping */
+        @media (max-width: 480px) {
+            .user-body .table tbody tr td[data-label="Actions"] {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .user-body .table tbody tr td[data-label="Actions"] .btn {
+                width: 100%;
+            }
+        }
+
+        /* Improve edit/delete buttons appearance */
+        .manage-users-container {
+            .user-body {
+                .table {
+                    tbody {
+                        tr {
+                            td {
+                                .btn {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    padding: 6px 10px;
+                                    border-radius: 8px;
+                                    font-weight: 600;
+                                    box-shadow: 0 2px 6px rgba(2,6,23,0.04);
+                                    transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+                                }
+
+                                .btn.edit {
+                                    background: linear-gradient(90deg, #f59e0b, #f97316);
+                                    color: #fff;
+                                    border: 0;
+                                }
+
+                                .btn.edit i { font-size: 0.95rem; }
+
+                                .btn.delete {
+                                    background: transparent;
+                                    color: #dc2626;
+                                    border: 1px solid rgba(220,38,38,0.12);
+                                }
+
+                                .btn.delete i { font-size: 0.95rem; }
+
+                                .btn:hover {
+                                    transform: translateY(-1px);
+                                }
+
+                                .btn.edit:hover {
+                                    filter: brightness(0.97);
+                                    box-shadow: 0 6px 18px rgba(249,115,22,0.12);
+                                }
+
+                                .btn.delete:hover {
+                                    background: #dc2626;
+                                    color: #fff;
+                                    border-color: #dc2626;
+                                    box-shadow: 0 6px 18px rgba(220,38,38,0.08);
+                                }
+
+                                /* reduce horizontal spacing added by mx-3 on small screens */
+                                @media (max-width: 576px) {
+                                    .btn { margin: 4px 0 !important; }
+                                    .btn.edit, .btn.delete { width: 48%; }
+                                    td[data-label="Actions"] { display: flex; gap: 8px; justify-content: space-between; }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }

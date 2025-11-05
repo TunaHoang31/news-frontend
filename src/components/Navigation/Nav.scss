@@ -1,53 +1,176 @@
  
-body {
-    margin: 0;
-}
-
-.topnav {
-    overflow: hidden;
-    background-color: #333;
-     a {
-        float: left;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
-    a:hover {
-        background-color: #ddd;
-        color: black;
-    }
-    a.active {
-        background-color: #04AA6D;
-        color: white;
-}
-}
+@import '../../styles/variables';
+@import '../../styles/mixins';
 
 .nav-header {
-    padding-bottom: 0.5rem;
-    .navbar{
-        padding-bottom: 0!important;
+  .navbar {
+    padding: 0.5rem 1rem;
+    background-color: $primary;
+    box-shadow: $shadow-sm;
+  }
+
+  .navbar-brand {
+    color: $text-light !important;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    transition: $transition-normal;
+
+    &:hover {
+      color: $primary-light !important;
     }
-    .bg-header{
-        background-color: #0b0220;
+  }
+
+  .navbar-nav {
+    align-items: center;
+    
+    .btn.btn-link.nav-link {
+      @include button-base;
+      margin-right: $spacing-sm;
+      background: transparent;
+      border: 1px solid transparent;
+
+      &:hover {
+        background: rgba(255,255,255,0.03);
+      }
+
+      &.active {
+        background: linear-gradient(90deg, rgba(96,165,250,0.06), rgba(59,130,246,0.04));
+        color: $primary-light !important;
+        border: 1px solid rgba($primary-light, 0.18);
+        box-shadow: $shadow-hover;
+      }
     }
-    a, .nav-link {
-        color: white !important;
-        &:hover{
-            color: #61dafb !important;
-        }
-        
-    }
+
     .nav-link {
-        &.active {
-            color: #61dafb !important;
-            border-bottom: 2px solid;
-        }
-    }   
-    .dropdown-menu {
-           a{  
-            color: #212529 !important;
-           }
-        }
+      color: $text-light !important;
+      font-weight: 500;
+      margin-right: $spacing-md;
+      @include button-base;
+
+      &:hover {
+        color: $secondary !important;
+        background-color: rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+      }
+
+      &.active {
+        color: $primary-light !important;
+        border-bottom: 2px solid $primary-light;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+    a {
+      color: #212529 !important;
+      font-weight: 500;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #f1f1f1;
+      }
+    }
+  }
+
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.subcategory-bar {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  overflow-x: auto;
+
+  .sub-item {
+    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: #212529;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: #f1f1f1;
+    }
+
+    &.active {
+      background: #eef6ff;
+      color: #0b5cf3;
+      font-weight: 700;
+      border: 1px solid rgba(11,92,243,0.12);
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-header .navbar-nav .nav-link {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+/* Improve visibility and hit area of mobile toggle */
+.nav-header {
+  .navbar-toggler {
+    z-index: 1060; /* above other elements */
+    padding: 0.45rem 0.5rem;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    transition: background 0.15s, transform 0.12s;
+  }
+
+  .navbar-toggler:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(40,167,69,0.14);
+  }
+
+  /* Hide default icon and show an accessible larger glyph */
+  .navbar-toggler .navbar-toggler-icon {
+    display: none;
+  }
+
+  .navbar-toggler::after {
+    content: '\2630'; /* ☰ */
+    font-size: 20px;
+    line-height: 1;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: middle;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+  }
+
+  /* when open, slightly change background to indicate active state */
+  .navbar-toggler.collapsed::after {
+    opacity: 1;
+  }
+  .navbar-toggler:not(.collapsed) {
+    background: rgba(255,255,255,0.12);
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 576px) {
+    .navbar-toggler {
+      padding: 0.5rem;
+      border-radius: 8px;
+    }
+    .navbar-toggler::after {
+      font-size: 22px;
+    }
+  }
 }

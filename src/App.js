@@ -1,14 +1,15 @@
-import { Switch } from 'react-router-dom/cjs/react-router-dom.min';
 import './App.scss';
 import NavHeader from './components/Navigation/NavHeader';
+import Footer from './components/Footer/Footer';
 import { BrowserRouter as Router, } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect, useState, useContext } from 'react';
+import { useContext } from 'react';
 // import _ from 'lodash';
 import AppRoutes from './routes/AppRoutes';
 import { TailSpin } from 'react-loader-spinner'
 import { UserContext } from "./context/UserContext";
+import { NewsProvider } from './context/NewsContext';
 
 function App() {
   const { user } = useContext(UserContext);
@@ -29,12 +30,15 @@ function App() {
 
         :
         <>
-          <div className='app-header'>
-            <NavHeader />
-          </div>
-          <div className='app-container'>
-            <AppRoutes />
-          </div>
+          <NewsProvider>
+            <div className='app-header'>
+              <NavHeader />
+            </div>
+            <div className='app-container'>
+              <AppRoutes />
+            </div>
+            <Footer />
+          </NewsProvider>
         </>
       }
 
@@ -55,6 +59,5 @@ function App() {
     </Router>
   );
 }
-
 
 export default App;
