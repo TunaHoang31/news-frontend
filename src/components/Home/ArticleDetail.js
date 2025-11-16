@@ -32,7 +32,7 @@ const ArticleDetail = () => {
                     <article className="article-content">
                         <h1 className="mb-2">{article.title}</h1>
                         <div className="text-muted mb-3">
-                            {article.category?.name} • {article.publishedAt ? new Date(article.publishedAt).toLocaleString() : ''}
+                            {article.authorName || article.author?.name || article.author?.username || 'Vô danh'} • {article.publishedAt ? new Date(article.publishedAt).toLocaleString() : ''}
                         </div>
                         {article.thumbnail && (
                             <img src={article.thumbnail}

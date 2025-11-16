@@ -153,58 +153,58 @@ const Users = (props) => {
                     </div>
                     <div className="user-body">
                         <div className="table-responsive">
-                        <table className="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Username</th>
-                                    <th scope="col">Group</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
+                            <table className="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Group</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                {listUsers && listUsers.length > 0 ?
-                                    <>
-                                        {listUsers.map((item, index) => {
-                                            return (
-                                                <tr key={`row-${index}`}>
-                                                    {/* <td>{index + 1} </td> */}
-                                                    <td data-label="Id">{item.id}</td>
-                                                    <td data-label="Email">{item.email}</td>
-                                                    <td data-label="Username">{item.username}</td>
-                                                    <td data-label="Group">{item.Group ? item.Group.name : ''}</td>
-                                                    <td data-label="Actions">
-                                                        <button
-                                                            className="btn btn-warning edit mx-3"
-                                                            onClick={() => handleEditUser(item)}
-                                                        >
-                                                            <i className="fa fa-pencil-square" ></i>
-                                                            Sửa
-                                                        </button>
-                                                        <button className="btn btn-danger delete"
-                                                            onClick={() => handleDeleteUser(item)}
-                                                        >
-                                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                                            Xóa
-                                                        </button>
+                                <tbody>
+                                    {listUsers && listUsers.length > 0 ?
+                                        <>
+                                            {listUsers.map((item, index) => {
+                                                return (
+                                                    <tr key={`row-${index}`}>
+                                                        {/* <td>{index + 1} </td> */}
+                                                        <td data-label="Id">{item.id}</td>
+                                                        <td data-label="Email">{item.email}</td>
+                                                        <td data-label="Username">{item.username}</td>
+                                                        <td data-label="Group">{item.Group ? item.Group.name : ''}</td>
+                                                        <td data-label="Actions">
+                                                            <button
+                                                                className="btn btn-warning edit mx-3"
+                                                                onClick={() => handleEditUser(item)}
+                                                            >
+                                                                <i className="fa fa-pencil-square" ></i>
+                                                                Sửa
+                                                            </button>
+                                                            <button className="btn btn-danger delete"
+                                                                onClick={() => handleDeleteUser(item)}
+                                                            >
+                                                                <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                                                Xóa
+                                                            </button>
 
-                                                    </td>
-                                                </tr>
-                                            )
+                                                        </td>
+                                                    </tr>
+                                                )
 
-                                        })}
-                                    </>
-                                    :
-                                    <>
-                                        <tr><td colSpan={5}> Not found users </td></tr>
-                                    </>
+                                            })}
+                                        </>
+                                        :
+                                        <>
+                                            <tr><td colSpan={5}> Not found users </td></tr>
+                                        </>
 
-                                }
-                            </tbody>
+                                    }
+                                </tbody>
 
-                        </table>
+                            </table>
                         </div>
                     </div>
                     {totalPages > 0 &&

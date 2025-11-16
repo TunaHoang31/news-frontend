@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
-import { fetchCategories } from '../../services/newsService';
+import ReactPaginate from 'react-paginate';
+import { fetchCategories, fetchArticles } from '../../services/newsService';
 import axios from '../../setup/axios';
 import { toast } from 'react-toastify';
 import './NewsAdmin.scss';
-import ModalDelete from '../manageUsers/ModalDelete';
+import ModalDeleteCategory from './ModalDeleteCategory';
+import ModalDeleteArticle from './ModalDeleteArticle';
+import CategoryForm from './CategoryForm';
+import ArticleForm from './ArticleForm';
 
 const NewsAdmin = () => {
 	const [tab, setTab] = useState('category');
@@ -16,6 +20,10 @@ const NewsAdmin = () => {
 	const [dataModalCat, setDataModalCat] = useState({});
 
 	const [articles, setArticles] = useState([]);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [currentLimit] = useState(25);
+	
+	const [totalPages, setTotalPages] = useState(0);
 	const [artForm, setArtForm] = useState({ title: '', slug: '', summary: '', content: '', thumbnail: '', status: 'draft', categoryId: '', publishedAt: '', authorName: '' });
 	const [artEditingId, setArtEditingId] = useState(null);
 	const [articleMainId, setArticleMainId] = useState('');
@@ -28,15 +36,23 @@ const NewsAdmin = () => {
 		if (res && res.EC === 0) setCategories(res.DT || []);
 	};
 
-	const loadArticles = async () => {
-		const res = await axios.get('/api/v1/news/articles?page=1&limit=50');
-		if (res && res.EC === 0) setArticles(res.DT.items || []);
+	const loadArticles = async (page = 1) => {
+		const res = await fetchArticles({ page, limit: currentLimit });
+		if (res && res.EC === 0) {
+			setArticles(res.DT.items || []);
+			const total = res.DT.total || 0;
+			const returnedPage = res.DT.page || page;
+			setTotalPages(total ? Math.ceil(total / currentLimit) : 0);
+			setCurrentPage(returnedPage);
+		}
 	};
-
 	useEffect(() => {
 		loadCategories();
-		loadArticles();
 	}, []);
+
+	useEffect(() => {
+		loadArticles(currentPage);
+	}, [currentPage]);
 
 	const submitCategory = async (e) => {
 		e.preventDefault();
@@ -112,7 +128,7 @@ const NewsAdmin = () => {
 			setArtForm({ title: '', slug: '', summary: '', content: '', thumbnail: '', status: 'draft', categoryId: '', publishedAt: '', authorName: '' });
 			setArtEditingId(null);
 			setArticleMainId('');
-			loadArticles();
+			loadArticles(currentPage);
 		}
 	};
 
@@ -143,6 +159,10 @@ const NewsAdmin = () => {
 		setIsShowModalDeleteArticle(true);
 	};
 
+	const handlePageClick = (event) => {
+		setCurrentPage(+event.selected + 1);
+	};
+
 	const handleCloseArticle = () => {
 		setIsShowModalDeleteArticle(false);
 		setDataModalArticle({});
@@ -155,7 +175,7 @@ const NewsAdmin = () => {
 			const res = await axios.delete(`/api/v1/news/article/${idToSend}`);
 			if (res && res.EC === 0) {
 				toast.success(res.EM || 'Xoá bài viết thành công');
-				loadArticles();
+				loadArticles(currentPage);
 				setIsShowModalDeleteArticle(false);
 				return;
 			}
@@ -181,6 +201,7 @@ const NewsAdmin = () => {
 						<div className="manage-news-actions">
 						</div>
 					</div>
+
 					<ul className="nav nav-tabs mt-3">
 						<li className="nav-item">
 							<button className={`nav-link ${tab === 'category' ? 'active' : ''}`} onClick={() => setTab('category')}>Danh mục</button>
@@ -192,17 +213,13 @@ const NewsAdmin = () => {
 
 					{tab === 'category' && (
 						<div className="mt-3">
-							<form className="row g-2" onSubmit={submitCategory}>
-								<div className="col-12 col-md-4 mb-2 mb-md-0"><input className="form-control" placeholder="Tên danh mục" value={catForm.name} onChange={e => setCatForm({ ...catForm, name: e.target.value })} required /></div>
-								<div className="col-12 col-md-4 mb-2 mb-md-0"><input className="form-control" placeholder="Slug" value={catForm.slug} onChange={e => setCatForm({ ...catForm, slug: e.target.value })} required /></div>
-								<div className="col-12 col-md-3 mb-2 mb-md-0">
-									<select className="form-select parent-select" value={catForm.parentId} onChange={e => setCatForm({ ...catForm, parentId: e.target.value })}>
-										<option value="">Tạo danh mục mới</option>
-										{categories.filter(c => c.parentId === null || c.parentId === undefined || String(c.parentId) === '').map(c => (<option key={c.id} value={String(c.id)}>{c.name}</option>))}
-									</select>
-								</div>
-								<div className="col-12 col-md-1"><button className="btn btn-primary w-100" type="submit">{catEditingId ? 'Lưu' : 'Thêm'}</button></div>
-							</form>
+							<CategoryForm
+								catForm={catForm}
+								setCatForm={setCatForm}
+								submitCategory={submitCategory}
+								catEditingId={catEditingId}
+								categories={categories}
+							/>
 							<div className="table-responsive mt-3">
 								<table className="table table-striped">
 									<thead><tr><th>ID</th><th>Tên danh mục</th><th>Slug</th><th>Chủ đề</th><th>Actions</th></tr></thead>
@@ -231,81 +248,15 @@ const NewsAdmin = () => {
 
 					{tab === 'article' && (
 						<div className="mt-3">
-							<form className="row g-2" onSubmit={submitArticle}>
-								<div className="col-12 col-md-6 mb-2 mb-md-0">
-									<input className="form-control"
-										placeholder="Tiêu đề"
-										value={artForm.title}
-										onChange={e => setArtForm({ ...artForm, title: e.target.value })} required />
-								</div>
-								<div className="col-md-3">
-									<input className="form-control"
-										placeholder="Slug"
-										value={artForm.slug}
-										onChange={e => setArtForm({ ...artForm, slug: e.target.value })} required /></div>
-								<div className="col-md-3">
-									{/* Main category select */}
-									<select className="form-select parent-select" value={articleMainId} onChange={e => {
-										const mainId = e.target.value;
-										setArticleMainId(mainId);
-										const subs = categories.filter(c => String(c.parentId) === String(mainId));
-										if (subs && subs.length > 0) {
-											setArtForm({ ...artForm, categoryId: '' });
-										} else {
-											setArtForm({ ...artForm, categoryId: mainId });
-										}
-									}}>
-										<option value="">Chọn danh mục</option>
-										{categories.filter(c => !c.parentId).map(c => (<option key={c.id} value={c.id}>{c.name}</option>))}
-									</select>
-									{/* Subcategory select - shown only when there are subs for selected main */}
-									{(() => {
-										const subs = categories.filter(c => String(c.parentId) === String(articleMainId));
-										if (!articleMainId) return null;
-										if (!subs || subs.length === 0) return null;
-										return (
-											<select className="form-select mt-2" value={artForm.categoryId} onChange={e => setArtForm({ ...artForm, categoryId: e.target.value })} required>
-												<option value="">Chọn chủ đề</option>
-												{subs.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}
-											</select>
-										)
-									})()}
-								</div>
-								<div className="col-md-12">
-									<input
-										className="form-control"
-										placeholder="Tóm tắt"
-										value={artForm.summary}
-										onChange={e => setArtForm({ ...artForm, summary: e.target.value })} /></div>
-								<div className="col-md-12">
-									<textarea
-										className="form-control"
-										rows="6"
-										placeholder="Nội dung (chèn <img src='URL'/>)"
-										value={artForm.content}
-										onChange={e => setArtForm({ ...artForm, content: e.target.value })}
-										style={{ whiteSpace: 'pre-wrap' }}
-										required /></div>
-								<div className="col-md-6">
-									<input
-										className="form-control"
-										placeholder="Ảnh URL"
-										value={artForm.thumbnail}
-										onChange={e => setArtForm({ ...artForm, thumbnail: e.target.value })} /></div>
-								<div className="col-md-3">
-									<select className="form-select" value={artForm.status} onChange={e => setArtForm({ ...artForm, status: e.target.value })}>
-										<option value="draft">Nháp</option>
-										<option value="published">Xuất bản</option>
-									</select>
-								</div>
-								<div className="col-md-3">
-									<input type="datetime-local" className="form-control" value={artForm.publishedAt} onChange={e => setArtForm({ ...artForm, publishedAt: e.target.value })} /></div>
-								<div className="col-md-6">
-									<input className="form-control" placeholder="Tác giả" value={artForm.authorName} onChange={e => setArtForm({ ...artForm, authorName: e.target.value })} /></div>
-								<div className="col-md-6">
-									<button className="btn btn-primary w-100" type="submit">{artEditingId ? 'Lưu' : 'Thêm'}</button></div>
-							</form>
-
+							<ArticleForm
+								artForm={artForm}
+								setArtForm={setArtForm}
+								categories={categories}
+								articleMainId={articleMainId}
+								setArticleMainId={setArticleMainId}
+								submitArticle={submitArticle}
+								artEditingId={artEditingId}
+							/>
 							<div className="table-responsive mt-3">
 								<table className="table table-striped">
 									<thead><tr><th>ID</th><th>Tiêu đề</th><th>Slug</th><th>Trạng thái</th><th>Danh mục</th><th> Actions</th></tr></thead>
@@ -326,28 +277,47 @@ const NewsAdmin = () => {
 									</tbody>
 								</table>
 							</div>
+							{totalPages > 1 && (
+								<div className="news-footer mt-3">
+									<ReactPaginate
+										nextLabel=">>>"
+										onPageChange={handlePageClick}
+										pageRangeDisplayed={3}
+										marginPagesDisplayed={2}
+										pageCount={totalPages}
+										previousLabel="<<<"
+										pageClassName="page-item"
+										pageLinkClassName="page-link"
+										previousClassName="page-item"
+										previousLinkClassName="page-link"
+										nextClassName="page-item"
+										nextLinkClassName="page-link"
+										breakLabel="..."
+										breakClassName="page-item"
+										breakLinkClassName="page-link"
+										containerClassName="pagination"
+										activeClassName="active"
+										forcePage={currentPage > 0 ? currentPage - 1 : 0}
+										renderOnZeroPageCount={null}
+									/>
+								</div>
+							)}
 						</div>
 					)}
 				</div>
 			</div>
 
-			<ModalDelete
+			<ModalDeleteCategory
 				show={isShowModalDeleteCat}
 				handleClose={handleCloseCat}
-				confirmDeleteUser={confirmDeleteCategory}
+				confirmDeleteCategory={confirmDeleteCategory}
 				dataModal={dataModalCat}
-				title={"Xóa danh mục"}
-				body={`Bạn có chắc chắn xóa danh mục này không: ${dataModalCat.name || dataModalCat.id || ''}?`}
-				confirmVariant={"danger"}
 			/>
-			<ModalDelete
+			<ModalDeleteArticle
 				show={isShowModalDeleteArticle}
 				handleClose={handleCloseArticle}
-				confirmDeleteUser={confirmDeleteArticle}
+				confirmDeleteArticle={confirmDeleteArticle}
 				dataModal={dataModalArticle}
-				title={"Xóa bài viết"}
-				body={`Bạn có chắc chắn xóa bài viết này không: ${dataModalArticle.title || dataModalArticle.id || ''}?`}
-				confirmVariant={"danger"}
 			/>
 		</>
 	);

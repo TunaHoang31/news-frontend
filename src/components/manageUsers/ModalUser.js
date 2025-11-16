@@ -125,7 +125,7 @@ const ModalUser = (props) => {
             <Modal size="lg" show={props.show} className='modal-user' onHide={() => handleCloseModalUser()}>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        <span>{props.action === "CREATE" ? "Thêm mới người dùng." : "Sửa người dùng."}</span>
+                        <span>{props.action === "CREATE" ? "Thêm mới người dùng." : "Thông tin tài khoản."}</span>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

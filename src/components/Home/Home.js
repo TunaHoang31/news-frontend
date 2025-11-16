@@ -30,6 +30,12 @@ const Home = () => {
         }
     };
 
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setPage(newPage);
+        }
+    };
+
     useEffect(() => {
         const init = async () => {
             const cat = await fetchCategories();
@@ -42,12 +48,27 @@ const Home = () => {
         loadData({ page: 1 });
     }, [categoryId, keyword]);
 
-    const totalPages = Math.ceil((total - 4) / 10) || 1;  
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        loadData({ page });
+    }, [page]);
 
-    const featured = articles.slice(0, 4);  
-    const remaining = articles.slice(4);     
-    const leftList = remaining.slice(0, 10); 
-    const rightList = articles.slice(0, 6);  
+    const totalPages = Math.ceil(total / limit) || 1;
+
+    const shuffleArray = (arr) => {
+        const a = Array.isArray(arr) ? [...arr] : [];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    };
+
+    const shuffled = shuffleArray(articles);
+    const featured = shuffled.slice(0, 4);
+    const remaining = shuffled.slice(4);
+    const leftList = remaining.slice(0, 10);
+    const rightList = articles.slice(0, 10);
 
     return (
         <div className="container mt-3">
@@ -81,7 +102,6 @@ const Home = () => {
                 </div>
             )}
 
-            {/* Main content split: left big list, right newest smaller list */}
             <div className="row">
                 <div className="col-12 col-md-8">
                     <div className="article-list">
@@ -104,9 +124,21 @@ const Home = () => {
                     </div>
 
                     <div className="d-flex justify-content-between align-items-center mt-3">
-                        <button className="btn btn-outline-secondary" disabled={page <= 1} onClick={() => loadData({ page: page - 1 })}>Trang trước</button>
+                        <button
+                            className="btn btn-outline-secondary"
+                            disabled={page <= 1}
+                            onClick={() => handlePageChange(page - 1)}
+                        >
+                            Trang trước
+                        </button>
                         <span>Trang {page}/{totalPages}</span>
-                        <button className="btn btn-outline-secondary" disabled={page >= totalPages} onClick={() => loadData({ page: page + 1 })}>Trang sau</button>
+                        <button
+                            className="btn btn-outline-secondary"
+                            disabled={page >= totalPages}
+                            onClick={() => handlePageChange(page + 1)}
+                        >
+                            Trang sau
+                        </button>
                     </div>
                 </div>
 

@@ -22,36 +22,22 @@ const NavHeader = () => {
     const [selectedMain, setSelectedMain] = useState(null);
 
     const isAdmin = (() => {
-        const gw = user?.account?.groupWithRoles;
         try {
-            if (!gw) {
-                const uname = user?.account?.username || '';
-                const mail = user?.account?.email || '';
-                return (uname && uname.toLowerCase().includes('admin')) || (mail && mail.toLowerCase().includes('admin'));
-            }
-            if (typeof gw === 'string') return gw.toLowerCase().includes('admin');
-            if (Array.isArray(gw)) {
-                for (const g of gw) {
-                    if (!g) continue;
-                    if (typeof g === 'string' && g.toLowerCase().includes('admin')) return true;
-                    if (g.name && typeof g.name === 'string' && g.name.toLowerCase().includes('admin')) return true;
-                    const roles = g.roles || g.roleList || g.rolesName || g.Roles;
-                    if (roles && Array.isArray(roles)) {
-                        for (const r of roles) {
-                            if (!r) continue;
-                            if (typeof r === 'string' && r.toLowerCase().includes('admin')) return true;
-                            if (r.name && typeof r.name === 'string' && r.name.toLowerCase().includes('admin')) return true;
-                        }
-                    }
-                }
-            } else if (typeof gw === 'object') {
-                const s = JSON.stringify(gw).toLowerCase();
-                if (s.includes('admin')) return true;
+            const gw = user?.account?.groupWithRoles;
+            if (!gw) return false;
+
+            if (typeof gw === 'string') {
+                return gw.toLowerCase().includes('admin');
             }
 
-            const uname = user?.account?.username || '';
-            const mail = user?.account?.email || '';
-            return (uname && uname.toLowerCase().includes('admin')) || (mail && mail.toLowerCase().includes('admin'));
+            if (Array.isArray(gw)) {
+                return gw.some(g =>
+                    (typeof g === 'string' && g.toLowerCase().includes('admin')) ||
+                    (g?.name && g.name.toLowerCase().includes('admin'))
+                );
+            }
+
+            return JSON.stringify(gw).toLowerCase().includes('admin');
         } catch (e) {
             return false;
         }
@@ -92,7 +78,12 @@ const NavHeader = () => {
     }
 
     const handleSearch = () => {
-        updateFilters({ keyword: search });
+        const foundCategory = categories.find(c => c.name.toLowerCase().includes(search.toLowerCase()));
+        if (foundCategory) {
+            updateFilters({ keyword: '', categoryId: foundCategory.id });
+        } else {
+            updateFilters({ keyword: search, categoryId: '' });
+        }
         if (location.pathname !== '/') history.push('/');
     }
 
@@ -103,7 +94,6 @@ const NavHeader = () => {
         if (location.pathname !== '/') history.push('/');
     }
 
-    if (!((user && user.isAuthenticated) || location.pathname === "/" || location.pathname === '/about')) return null;
 
     return (
         <div className='nav-header'>

@@ -10,12 +10,15 @@ import AppRoutes from './routes/AppRoutes';
 import { TailSpin } from 'react-loader-spinner'
 import { UserContext } from "./context/UserContext";
 import { NewsProvider } from './context/NewsContext';
+import ScrollToTop from './components/Scroll/ScrollToTop';
+import ScrollToTopButton from './components/Scroll/ScrollToTopButton';
 
 function App() {
   const { user } = useContext(UserContext);
 
   return (
     <Router>
+      <ScrollToTop />
       {user && user.isLoading ?
         <div className='loading-container'>
           <TailSpin
@@ -38,6 +41,7 @@ function App() {
               <AppRoutes />
             </div>
             <Footer />
+            <ScrollToTopButton />
           </NewsProvider>
         </>
       }
