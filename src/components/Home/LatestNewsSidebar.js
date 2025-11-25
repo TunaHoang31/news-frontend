@@ -20,7 +20,7 @@ const LatestNewsSidebar = ({ excludeArticleId }) => {
                 page: Math.floor(Math.random() * 5) + 1,
                 limit: 6,
                 sortBy: 'publishedAt',
-                sortOrder: 'desc'   
+                sortOrder: 'desc'
             });
 
             if (latestRes && latestRes.EC === 0) {
@@ -59,7 +59,7 @@ const LatestNewsSidebar = ({ excludeArticleId }) => {
             </div>
 
             <div className="sidebar-section">
-                <h4 className="section-title mb-3">Tin tức</h4>
+                <h4 className="section-title mb-3">Tin tức khác</h4>
                 {oldestArticles.map(article => (
                     <Link key={article.id} to={`/news/${article.slug}`} className="sidebar-item">
                         {article.thumbnail && <img src={article.thumbnail} alt={article.title} />}

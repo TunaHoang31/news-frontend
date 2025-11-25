@@ -18,7 +18,9 @@ const CategoryForm = ({ catForm, setCatForm, submitCategory, catEditingId, categ
             <div className="col-12 col-md-1">
                 <button className="btn btn-primary w-100" type="submit">{catEditingId ? 'Lưu' : 'Thêm'}</button>
             </div>
+             <hr />
         </form>
+        
     );
 };
 

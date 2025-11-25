@@ -1,8 +1,11 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
 .role-container {
     .actions{
         i{
             padding-top: 7px;
-            padding-right: 7px;
+            padding-right: 1px;
             font-size: 22px;
             cursor: pointer;
         }
@@ -10,7 +13,7 @@
             color: green;
         }
         .delete{
-            color: red;
+            // color: red;
         }
     }
     .table-role{

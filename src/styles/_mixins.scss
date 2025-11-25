@@ -29,6 +29,34 @@
   }
 }
 
+@mixin table-frame {
+  background: #fff;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  table & {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: $spacing-sm;
+    border-bottom: 1px solid $border-color;
+    border-right: 1px solid $border-color; 
+    vertical-align: middle;
+  }
+
+  th:last-child, td:last-child {
+    border-right: none;
+  }
+}
+
 // Card Styles
 @mixin card-base {
   background: white;

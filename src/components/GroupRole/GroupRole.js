@@ -97,15 +97,15 @@ const GroupRole = () => {
         <div className='group-role-container'>
             <div className='container'>
                 <div className='container mt-3'>
-                    <h4>Group Roles</h4>
+                    <h3>Danh sách quyền của người dùng</h3>
                     <div className='assign-group-role'>
                         <div className='col-12 col-sm-6 form-group'>
-                            <label>Select Group: (<span className='red'>*</span>) :</label>
+                            <label> <h6>Nhóm Tài khoản: (<span className='red'>*</span>) :</h6></label>
                             <select
                                 className={'form-select'}
                                 onChange={(event) => handleOnChangeGroup(event.target.value)}
                             >
-                                <option value=''>Please select your group</option>
+                                <option value=''>Hãy chọn nhóm người dùng</option>
 
                                 {userGroups.length > 0 && userGroups.map((item, index) => {
                                     return (
@@ -118,7 +118,7 @@ const GroupRole = () => {
                         <hr />
                         {selectGroups &&
                             <div className='roles'>
-                                <h5> Assign Roles:</h5>
+                                <h5> Vai trò:</h5>
                                 {
                                     assignRolesByGroup && assignRolesByGroup.length > 0
                                     && assignRolesByGroup.map((item, index) => {

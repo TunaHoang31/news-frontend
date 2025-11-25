@@ -69,12 +69,11 @@ const Role = (props) => {
         }
     }
 
-
     return (
         <div className='role-container'>
             <div className='container'>
                 <div className='adding-roles mt-3'>
-                    <div className='title-role'><h4>Thêm quyền hạn</h4> </div>
+                    <div className='title-role'><h3>Thêm quyền hạn</h3> </div>
                     <div className=' role-parent'>
                         {
                             Object.entries(listChilds).map(([key, child,], index) => {
@@ -90,7 +89,7 @@ const Role = (props) => {
                                             />
                                         </div>
                                         <div className='col-5 form-group'>
-                                            <label>Description:</label>
+                                            <label>Mô tả:</label>
                                             <input type='text' className='form-control'
                                                 value={child.description}
                                                 onChange={(event) => handleOnchangeInput('description', event.target.value, key)}
@@ -99,7 +98,10 @@ const Role = (props) => {
                                         <div className='col-2 mt-4 actions'>
                                             <i className="fa fa-plus-circle add" onClick={() => handleAddNewInput()}></i>
                                             {index >= 1 &&
-                                                <i className="fa fa-trash-o delete" onClick={() => handleDeleteInput(key)}></i>}
+                                                <button className="btn btn-danger delete" onClick={() => handleDeleteInput(key)} style={{ marginLeft: '8px' }}>
+                                                    <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                                </button>
+                                            }
                                         </div>
                                     </div>
 
@@ -108,7 +110,7 @@ const Role = (props) => {
                         }
 
                         <div>
-                            <button className='btn btn-warning mt-3' onClick={() => handleSave()}> Lưu</button>
+                            <button className='btn btn-primary mt-3' onClick={() => handleSave()}>Thêm</button>
                         </div>
                     </div>
 

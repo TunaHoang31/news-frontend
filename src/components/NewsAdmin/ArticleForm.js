@@ -60,6 +60,7 @@ const ArticleForm = ({ artForm, setArtForm, categories, articleMainId, setArticl
             <div className="col-md-6">
                 <button className="btn btn-primary w-100" type="submit">{artEditingId ? 'Lưu' : 'Thêm'}</button>
             </div>
+             <hr />
         </form>
     );
 };

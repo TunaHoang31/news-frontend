@@ -81,7 +81,6 @@ const ModalUser = (props) => {
                 let _validInputs = _.cloneDeep(validInputsDefault);
                 _validInputs[arr[i]] = false;
                 setValidInputs(_validInputs);
-
                 toast.error(`Vui lòng nhập ${arr[i]}`);
                 check = false;
                 break;
@@ -112,7 +111,6 @@ const ModalUser = (props) => {
                 _validInputs[res.DT] = false;
                 setValidInputs(_validInputs);
             }
-
         }
     }
     const handleCloseModalUser = () => {
@@ -129,10 +127,9 @@ const ModalUser = (props) => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
                     <div className='content-body row'>
                         <div className='col-12 col-sm-6 form-group'>
-                            <label>Email adress (<span className='red'>*</span>) :</label>
+                            <label>Email (<span className='red'>*</span>) :</label>
                             <input
                                 disabled={action === 'CREATE' ? false : true}
                                 className={validInputs.email ? 'form-control' : 'form-control is-invalid'}
@@ -141,7 +138,7 @@ const ModalUser = (props) => {
                             />
                         </div>
                         <div className='col-12 col-sm-6 form-group'>
-                            <label>Phone number (<span className='red'>*</span>) :</label>
+                            <label>Số điện thoại (<span className='red'>*</span>) :</label>
                             <input
                                 disabled={action === 'CREATE' ? false : true}
                                 className={validInputs.phone ? 'form-control' : 'form-control is-invalid'}
@@ -150,7 +147,7 @@ const ModalUser = (props) => {
                             />
                         </div>
                         <div className='col-12 col-sm-6 form-group'>
-                            <label>Username:</label>
+                            <label>Họ tên:</label>
                             <input
                                 className='form-control'
                                 type='text'
@@ -162,7 +159,7 @@ const ModalUser = (props) => {
                             {action === 'CREATE'
                                 &&
                                 <>
-                                    <label>Password (<span className='red'>*</span>) :</label>
+                                    <label>Mật khẩu (<span className='red'>*</span>) :</label>
                                     <input
                                         className={validInputs.password ? 'form-control' : 'form-control is-invalid'}
                                         type='password' value={userData.password}
@@ -172,7 +169,7 @@ const ModalUser = (props) => {
                             }
                         </div>
                         <div className='col-12 col-sm-12 form-group'>
-                            <label>Address:</label>
+                            <label>Địa Chỉ:</label>
                             <input
                                 className='form-control'
                                 type='text'
@@ -181,19 +178,19 @@ const ModalUser = (props) => {
                             />
                         </div>
                         <div className='col-12 col-sm-6 form-group'>
-                            <label>Gender:</label>
+                            <label>Giới tính:</label>
                             <select
                                 className='form-select'
                                 onChange={(event) => handleOnchangeInput(event.target.value, "sex")}
                                 value={userData.sex}
                             >
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                                <option value="Male">Nam</option>
+                                <option value="Female">Nữ</option>
+                                <option value="Other">Khác</option>
                             </select>
                         </div>
                         <div className='col-12 col-sm-6 form-group'>
-                            <label>Group (<span className='red'>*</span>) :</label>
+                            <label>Nhóm (<span className='red'>*</span>) :</label>
                             <select
                                 className={validInputs.group ? 'form-select' : 'form-select is-invalid'}
                                 onChange={(event) => handleOnchangeInput(event.target.value, "group")}

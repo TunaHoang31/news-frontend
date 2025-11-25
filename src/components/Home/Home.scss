@@ -1,4 +1,3 @@
-/* Styles for Home layout: featured grid, big list items and sidebar small items */
 .featured-row {
   .featured-card {
     display: block;
@@ -125,7 +124,7 @@
 
     .small-content {
       flex: 1;
-      min-width: 0; /* Để text có thể ellipsis */
+      min-width: 0;
 
       .category-tag {
         font-size: 0.8rem;

@@ -1,10 +1,19 @@
 @import './styles/variables';
 @import './styles/mixins';
+@import './styles/common-tables';
 
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: $background-light;
+}
+
+h3 {
+  font-size: 1.25rem; /* 20px */
+  margin: 0 0 $spacing-md 0;
+  font-weight: 700;
+  color: $text-dark;
+  line-height: 1.2;
 }
 
 .loading-container {
@@ -15,7 +24,6 @@ body {
     min-height: 100vh;
 }
 
-/* Global table action buttons styling - apply to all tables */
 .table {
   .btn.edit, .btn.delete {
     display: inline-flex;

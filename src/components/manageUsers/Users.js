@@ -24,7 +24,6 @@ const Users = (props) => {
 
     const { user } = useContext(UserContext);
 
-    // Determine if current user is an admin (robust checks across possible shapes)
     const isAdmin = (() => {
         const gw = user?.account?.groupWithRoles;
         try {
@@ -68,33 +67,31 @@ const Users = (props) => {
     const fetchUsers = async () => {
         let response = await fetchAllUser(currentPage, currentLimit);
         if (response && response.EC === 0) {
-            // setListUsers(response.DT);
             setTotalPages(response.DT.totalPages);
             let users = response.DT.users || [];
-            // If current user is not admin, only show that user's own record
             if (user && user.isAuthenticated && !isAdmin) {
                 const me = users.find(u => (u.username && user.account?.username && u.username === user.account.username) || (u.email && user.account?.email && u.email === user.account.email));
                 users = me ? [me] : [];
-                // adjust total pages to 1 or 0
                 setTotalPages(users.length > 0 ? 1 : 0);
             }
             setListUsers(users);
         }
-
     }
+
     const handlePageClick = (event) => {
         setCurrentPage(+event.selected + 1);
-
     };
 
     const handleDeleteUser = async (user) => {
         setDataModal(user);
         setIsShowModalDelete(true);
     };
+
     const handleClose = () => {
         setIsShowModalDelete(false);
         setDataModal({});
     }
+
     const confirmDeleteUser = async () => {
         let response = await deleteUser(dataModal);
         if (response && response.EC === 0) {
@@ -104,8 +101,8 @@ const Users = (props) => {
         } else {
             toast.error(response.EM)
         }
-
     }
+
     const onHideModalUser = async () => {
         setIsShowModalUser(false);
         setDataModalUser({});
@@ -125,19 +122,17 @@ const Users = (props) => {
     return (
         <>
             <div className="container"  >
-
                 <div className="manage-users-container" >
                     <div className="user-header">
                         <div className="title mt-3">
                             <h3> Quản lý người dùng</h3>
-
                         </div>
                         <div className="actions my-3 ">
-                            <button
+                            {/* <button
                                 className="btn btn-success refresh"
                                 onClick={() => handleRefresh()}
                             >
-                                <i className="fa fa-refresh"></i> Làm mới </button>
+                                <i className="fa fa-refresh"></i> Làm mới </button> */}
                             {isAdmin && (
                                 <button className="btn btn-primary"
                                     onClick={() => {
@@ -146,9 +141,10 @@ const Users = (props) => {
                                     }}
                                 >
                                     <i className="fa fa-user-plus"></i>
-                                    Thêm người dùng
+                                    Thêm mới
                                 </button>
                             )}
+                            <hr />
                         </div>
                     </div>
                     <div className="user-body">
@@ -158,12 +154,11 @@ const Users = (props) => {
                                     <tr>
                                         <th scope="col">Id</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Group</th>
-                                        <th>Actions</th>
+                                        <th scope="col">Họ tên</th>
+                                        <th scope="col">Nhóm</th>
+                                        <th>Tác vụ</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     {listUsers && listUsers.length > 0 ?
                                         <>
@@ -181,35 +176,29 @@ const Users = (props) => {
                                                                 onClick={() => handleEditUser(item)}
                                                             >
                                                                 <i className="fa fa-pencil-square" ></i>
-                                                                Sửa
+
                                                             </button>
                                                             <button className="btn btn-danger delete"
                                                                 onClick={() => handleDeleteUser(item)}
                                                             >
                                                                 <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                                                Xóa
                                                             </button>
-
                                                         </td>
                                                     </tr>
                                                 )
-
                                             })}
                                         </>
                                         :
                                         <>
-                                            <tr><td colSpan={5}> Not found users </td></tr>
+                                            <tr><td colSpan={5}> Không tìm thấy người dùng</td></tr>
                                         </>
-
                                     }
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
                     {totalPages > 0 &&
                         <div className="user-footer">
-
                             <ReactPaginate
                                 nextLabel=">>>"
                                 onPageChange={handlePageClick}
@@ -233,8 +222,6 @@ const Users = (props) => {
                         </div>
                     }
                 </div>
-
-
             </div>
             <ModalDelete
                 show={isShowModalDelete}
@@ -254,7 +241,6 @@ const Users = (props) => {
                 dataModalUser={dataModalUser}
             />
         </>
-
     )
 }
 

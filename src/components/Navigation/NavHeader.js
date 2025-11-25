@@ -132,7 +132,9 @@ const NavHeader = () => {
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={e => { if (e.key === 'Enter') handleSearch(); }}
                             />
-                            <button className="btn btn-primary me-3" onClick={handleSearch}>Tìm</button>
+                            <button className="btn btn-primary me-3" onClick={handleSearch} aria-label="Tìm kiếm">
+                                <i className="fa fa-search" aria-hidden="true"></i>
+                            </button>
 
                             {user && user.isAuthenticated ?
                                 <>

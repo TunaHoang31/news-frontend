@@ -30,7 +30,6 @@ function App() {
           <div> Đang tải trang...</div>
         </div>
 
-
         :
         <>
           <NewsProvider>
@@ -45,7 +44,6 @@ function App() {
           </NewsProvider>
         </>
       }
-
 
       <ToastContainer
         position="bottom-center"

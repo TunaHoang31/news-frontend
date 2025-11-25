@@ -29,58 +29,8 @@
             margin-right: $spacing-sm;
         }
     }
+    
 }
-
-/* Responsive table for small screens */
-@media (max-width: 768px) {
-    .user-body {
-        .table {
-            thead {
-                display: none;
-            }
-
-            tbody {
-                tr {
-                    display: block;
-                    margin-bottom: 12px;
-                    border: 1px solid rgba(0,0,0,0.04);
-                    border-radius: 8px;
-                    padding: 8px;
-                    background: #fff;
-                }
-
-                td {
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 6px 8px;
-                    border-top: none;
-                }
-
-                td[data-label]::before {
-                    content: attr(data-label) ": ";
-                    font-weight: 700;
-                    color: #374151;
-                    margin-right: 8px;
-                    white-space: nowrap;
-                }
-
-                td:last-child {
-                    display: flex;
-                    gap: 8px;
-                    justify-content: flex-end;
-                    flex-wrap: wrap;
-                }
-
-                .btn {
-                    padding: 6px 10px;
-                    font-size: 0.85rem;
-                }
-            }
-        }
-    }
-}
-
-        /* On very small screens make action buttons full width for easier tapping */
         @media (max-width: 480px) {
             .user-body .table tbody tr td[data-label="Actions"] {
                 display: flex;
@@ -92,7 +42,6 @@
             }
         }
 
-        /* Improve edit/delete buttons appearance */
         .manage-users-container {
             .user-body {
                 .table {
@@ -142,7 +91,6 @@
                                     box-shadow: 0 6px 18px rgba(220,38,38,0.08);
                                 }
 
-                                /* reduce horizontal spacing added by mx-3 on small screens */
                                 @media (max-width: 576px) {
                                     .btn { margin: 4px 0 !important; }
                                     .btn.edit, .btn.delete { width: 48%; }

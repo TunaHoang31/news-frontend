@@ -22,7 +22,7 @@ const NewsAdmin = () => {
 	const [articles, setArticles] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentLimit] = useState(25);
-	
+
 	const [totalPages, setTotalPages] = useState(0);
 	const [artForm, setArtForm] = useState({ title: '', slug: '', summary: '', content: '', thumbnail: '', status: 'draft', categoryId: '', publishedAt: '', authorName: '' });
 	const [artEditingId, setArtEditingId] = useState(null);
@@ -201,7 +201,6 @@ const NewsAdmin = () => {
 						<div className="manage-news-actions">
 						</div>
 					</div>
-
 					<ul className="nav nav-tabs mt-3">
 						<li className="nav-item">
 							<button className={`nav-link ${tab === 'category' ? 'active' : ''}`} onClick={() => setTab('category')}>Danh mục</button>
@@ -221,8 +220,8 @@ const NewsAdmin = () => {
 								categories={categories}
 							/>
 							<div className="table-responsive mt-3">
-								<table className="table table-striped">
-									<thead><tr><th>ID</th><th>Tên danh mục</th><th>Slug</th><th>Chủ đề</th><th>Actions</th></tr></thead>
+								<table className="table table-striped category-table">
+									<thead><tr><th>ID</th><th>Tên danh mục</th><th>Slug</th><th>Chủ đề</th><th>Tác vụ</th></tr></thead>
 									<tbody>
 										{categories.map(c => {
 											const parent = categories.find(p => String(p.id) === String(c.parentId));
@@ -234,8 +233,12 @@ const NewsAdmin = () => {
 													<td>{c.slug}</td>
 													<td>{parent ? parent.name : ''}</td>
 													<td data-label="Actions">
-														<button className="btn btn-sm btn-outline-secondary me-2 edit" onClick={() => editCategory(c)}>Sửa</button>
-														<button className="btn btn-sm btn-outline-danger delete" onClick={() => deleteCategory(c.id)}>Xóa</button>
+														<button className="btn btn-warning edit mx-3" onClick={() => editCategory(c)}>
+															<i className="fa fa-pencil-square" ></i>
+														</button>
+														<button className="btn btn-danger delete btn-sm" onClick={() => deleteCategory(c.id)}>
+															<i className="fa fa-trash-o" aria-hidden="true"></i>
+														</button>
 													</td>
 												</tr>
 											)
@@ -258,8 +261,8 @@ const NewsAdmin = () => {
 								artEditingId={artEditingId}
 							/>
 							<div className="table-responsive mt-3">
-								<table className="table table-striped">
-									<thead><tr><th>ID</th><th>Tiêu đề</th><th>Slug</th><th>Trạng thái</th><th>Danh mục</th><th> Actions</th></tr></thead>
+								<table className="table table-striped article-table">
+									<thead><tr><th>ID</th><th>Tiêu đề</th><th>Slug</th><th>Trạng thái</th><th>Danh mục</th><th> Tác vụ</th></tr></thead>
 									<tbody>
 										{articles.map(a => (
 											<tr key={a.id}>
@@ -269,8 +272,12 @@ const NewsAdmin = () => {
 												<td>{a.status}</td>
 												<td>{a.category?.name || a.categoryId}</td>
 												<td data-label="Actions">
-													<button className="btn btn-sm btn-outline-secondary me-2 edit" onClick={() => editArticle(a)}>Sửa</button>
-													<button className="btn btn-sm btn-outline-danger delete" onClick={() => deleteArticle(a.id)}>Xóa</button>
+													<button className="btn btn-warning edit mx-3" onClick={() => editArticle(a)}>
+														<i className="fa fa-pencil-square" ></i>
+													</button>
+													<button className="btn btn-danger delete btn-sm" onClick={() => deleteArticle(a.id)}>
+														<i className="fa fa-trash-o" aria-hidden="true"></i>
+													</button>
 												</td>
 											</tr>
 										))}

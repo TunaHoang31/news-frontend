@@ -1,9 +1,12 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { fetchAllRole, deleteRole } from '../../services/roleService'
 import { toast } from 'react-toastify';
+import ModalDeleteRole from './ModalDeleteRole';
 
 const TableRole = forwardRef((props, ref) => {
     const [listRoles, setListRoles] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [dataModal, setDataModal] = useState(null);
 
     useEffect(() => {
         getAllRoles()
@@ -23,21 +26,42 @@ const TableRole = forwardRef((props, ref) => {
         }
     }
     const handleDeleteRole = async (role) => {
-        let data = await deleteRole(role);
+        // open confirmation modal
+        setDataModal(role);
+        setShowModal(true);
+    }
+
+    const handleConfirmDelete = async () => {
+        if (!dataModal) return;
+        let data = await deleteRole(dataModal);
         if (data && data.EC === 0) {
             toast.success(data.EM);
             await getAllRoles();
+        } else if (data) {
+            toast.error(data.EM || 'Xóa thất bại');
         }
+        setShowModal(false);
+        setDataModal(null);
+    }
 
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setDataModal(null);
     }
     return (<>
+        <ModalDeleteRole
+            show={showModal}
+            handleClose={handleCloseModal}
+            dataModal={dataModal}
+            confirmDeleteRole={handleConfirmDelete}
+        />
         <table className="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">URL</th>
-                    <th scope="col">Description</th>
-                    <th>Actions</th>
+                    <th scope="col">Mô tả</th>
+                    <th>Tác vụ</th>
                 </tr>
             </thead>
 
@@ -57,18 +81,16 @@ const TableRole = forwardRef((props, ref) => {
                                             onClick={() => handleDeleteRole(item)}
                                         >
                                             <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                            Xóa
                                         </button>
 
                                     </td>
                                 </tr>
                             )
-
                         })}
                     </>
                     :
                     <>
-                        <tr><td colSpan={4}> Not found roles </td></tr>
+                        <tr><td colSpan={4}>Không tìm thấy </td></tr>
                     </>
 
                 }
